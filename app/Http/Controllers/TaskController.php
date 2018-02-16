@@ -94,7 +94,18 @@ class TaskController extends Controller
      */
     public function update(Request $request, Task $task)
     {
-        //
+        $this->validate($request, [
+            'name'        => 'required|max:255',
+            'description' => 'required',
+        ]);
+
+        $task->name = request('name');
+        $task->description = request('description');
+        $task->save();
+
+        return response()->json([
+            'message' => 'Task updated successfully!'
+        ], 200);
     }
 
     /**
@@ -103,8 +114,13 @@ class TaskController extends Controller
      * @param  \App\Task  $task
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Task $task)
-    {
-        //
-    }
+        
+        public function destroy(Task $task)
+        {
+            $task->delete();
+     
+            return response()->json([
+                'message' => 'Task deleted successfully!'
+            ], 200);
+        }
 }
